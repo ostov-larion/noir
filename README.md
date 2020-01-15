@@ -1,3 +1,3 @@
 # noir
-![Cover](https://raw.githubusercontent.com/ostov-larion/noir/branch/master/cover.png)
+![Cover](https://github.com/ostov-larion/noir/blob/master/cover.png|width=500)
 Noir is a brand new and minimalistic Interactive Fiction engine
