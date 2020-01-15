@@ -1,7 +1,7 @@
 # Noir
 Noir is a brand new and minimalistic Interactive Fiction engine
 <img width=1000 src=https://github.com/ostov-larion/noir/blob/master/screenshot.png />
-All interactive literature can be divided into two categories: menu-based and parse-based.
+All interactive literature can be divided into two categories: menu-based and parser-based.
 Menu-based offers a tough choice of actions.
 Parser-based gives freedom to the player, allowing him to enter commands that the game interprets.
 Both approaches have disadvantages: menu-based are easy to create by the author, but do not give freedom to the player; parser-based give freedom to the player, but it is usually difficult for the author to make such games.
