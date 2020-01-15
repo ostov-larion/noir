@@ -53,11 +53,37 @@ PrintRoom=function(n)
 insert=function(text)
 {
 	let objectrule=/\[(.+?)]/g;
+	let descrule=/\{(.+?)\}/g;
+	while((desc=descrule.exec(text)))
+	{
+		let a=desc[1].split("|");
+		let b=a[1].split(" ");
+		if(noir.stored.find((e)=>noir.unify(b,e)))
+		{
+			text=text.replace(desc[0],a[0])
+		}
+		else
+		{
+			text=text.replace(desc[0],"")
+		}
+	}
 	while((obj=objectrule.exec(text)))
 	{
 		let a=obj[1].split("|");
-		text=text.replace(/%2c%/g,',').replace(/\\n/g,'<br>').replace(/\\t/g,'&nbsp;&nbsp;').replace(obj[0],`<button class="obj" data-class="${a[1]?a[1]:a[0]}">${a[0].replace(/_/g,' ')}</button>`)
+		let b=obj[0].split(",");
+		if(b.length>1)
+		{
+			for(let iii of b)
+			{
+				text=text.replace(/%2c%/g,',').replace(/\\n/g,'<br>').replace(/\\t/g,'&nbsp;&nbsp;').replace(iii,`<button class="obj" data-class="${iii.replace(/[\[\]]/,'')}">${iii.replace(/_/g,' ').replace(/[\[\]]/,'')}</button>`)
+			}
+		}
+		else
+		{
+			text=text.replace(/%2c%/g,',').replace(/\\n/g,'<br>').replace(/\\t/g,'&nbsp;&nbsp;').replace(obj[0],`<button class="obj" data-class="${a[1]?a[1]:a[0]}">${a[0].replace(/_/g,' ')}</button>`)
+		}
 	}
 	$("#player").append(text);
+	$("#player")[0].scrollTop=$("#player")[0].scrollHeight;
 }
 }
