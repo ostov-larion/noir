@@ -1,13 +1,115 @@
 doc=`
 <h3>Documentation</h3>
 <ul>
-	<li>Philosofy and concept</li>
-	<li>Hello World!</li>
+	<li><a href="#concept">Philosofy and concept</a></li>
+	<li><a href="#hello_world">Hello World!</a></li>
 	<li><a href="#gref">Grammar Reference</a></li>
+	<li><a href="#todo">TODO</a></li>
 </ul>
+<h4 id="concept">Philosofy and concept</h4>
+Noir is a brand new interactive fiction engine.<br>
+By choosing the marked words, and using <i>actions</i> on them, the player travels around the world of the game.<br>
+This is the golden mean between the simplicity of menu-based interactive fiction and the freedom of parser-based interactive fiction.
+<br><br>
+Main principes:
+<ul>
+	<li>Simply, as much as possible:
+		<ul>
+			<li>The programming language used in Noir is so simple that it can be parsed with RegExp!</li>
+			<li>The design of the engine is designed to be as minimalistic as possible.</li>
+		</ul>
+	</li>
+	<li>Language neutral:
+		<ul>
+			<li>It doesn't matter if you are Russian, German, Japanese, or Esperantist. This engine is independent of the developer / player language.</li>
+			<li>The syntax of the Noir language consists mainly of punctuation, and does not contain the keywords of English or any other language.</li>
+		</ul>
+	</li>
+	<li>Extensible:
+		<ul>
+			<li>Despite the fact that Noir uses its own DSL (Domain Specific Language), scripts are easily extended with js-code.</li>
+		</ul>
+	</li>
+</ul>
+<h4 id="hello_world">Hello World!</h4>
+Let's make fiction worlds!<br>
+<code>
+<pre>:: Test Story
+
+# Test Room
+You are in the test room. There is a [chair] next to [you].
+---------------------------------------------------------
+@ sit chair
+
+> sit chair
+You sat down on a [chair]. 
+This is not a very comfortable chair, but there is no need to complain.
+
+> stand chair
+You got up from your [chair].
+
+> take chair
+You token the [chair].
+
+> throw chair
+You threw the [chair] onto the floor.
+
+kick chair you -> Dead End
+---------------------------------------------------------
+
+# Dead End
+You dead.
+----------
+
+sit chair <> stand chair
+take chair <> drop chair
+take chair => kick chair you</pre></code>
+
 <h4 id="gref">Grammar Reference</h4>
+<h4>Title</h4>
+<code>:: (Title)</code>
+Title of your story.
+<h4>Rooms</h4>
 <pre>
-Action rules:
-	Things => Actions.
-	Exemple: item1 item2 => take.
-</pre>`
+<code># (Room name)
+(Room description)
+------------------
+</code>
+OR
+<code># (Room name)
+(Room description)
+------------------
+(Snippets, Initial State, Links to other rooms)
+------------------
+</code>
+</pre>
+<h4>Snippets</h4>
+<pre><code>> (Action)
+(Text here)
+</code></pre>
+Snippets are texts that will be shown as soon as the specified action is taken.
+
+<h4 id="todo">TODO</h4>
+<ul>
+	<li>Language Features:
+		<ul>
+			<li>Item Classes</li>
+			<li>Global Snippets</li>
+			<li>Macros</li>
+			<li>Save & Load</li>
+		</ul>
+	</li>
+	<li>Editor:
+		<ul>
+			<li>Code coloring (Optionally)</li>
+		</ul>
+	</li>
+	<li>Meta / Code:
+		<ul>
+			<li>Complete documentation (also in different languages)</li>
+			<li>Comment the code</li>
+			<li>Beautify the code</li>
+		</ul>
+	</li>
+</ul>
+`

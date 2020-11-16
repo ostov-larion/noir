@@ -5,27 +5,25 @@
 		<meta name='viewport' content="width=device-width"/>
 		<link href="css/dark.css" rel="stylesheet"></link>
 		<script src="js/FileSaver.js"></script>
-		<script src="js/noir.js"></script>
-		<script src="js/jquery-min.js"></script>
-		<script src="js/ui.js"></script>
-		<script src="js/uiexport.js"></script>
-		<script src="js/htmlexport.js"></script>
 		<script src="js/stepper.js"></script>
+		<script src="js/noir.js"></script>
+		<script src="js/htmlexport.js"></script>
 		<script src="docs.html"></script>
 		<link href="favicon.png" rel="icon"></link>
 	</head>
-	<body>
+	<body onload="UI.load()">
 	<h1>Noir</h1>
-		<div class="box panel" id="editor" autofocus contenteditable>
-		</div>
+		<textarea class="box-input" id="editor" autofocus></textarea>
 		<div>
 		<div class="box panel" id="player">
 			
 		</div>
 		<div class="box">
-			<button id="run">Run!</button><button>Save</button><button id="export">Export</button><button id="docs">Docs</button>
+			<button id="run" onclick="UI.run()">Run!</button>
+			<button id="save" onclick="UI.save()">Save</button>
+			<button id="export" onclick="UI.export()">Export</button>
+			<button id="docs" onclick="UI.docs()">Docs</button>
 		</div>
-		<div class="box" id="actions" style="float:left;min-height:3.8%">
-		<div>
+		<div class="box" id="actions" style="float:left;min-height:4.4%"><div>
 	</body>
 </html>
