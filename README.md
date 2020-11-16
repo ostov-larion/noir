@@ -8,3 +8,4 @@ Both approaches have disadvantages: menu-based are easy to create by the author,
 
 Noir suggests otherwise.
 When the game displays a description of the location, some words are underlined - these are the so-called "items". You can interact with them by clicking on them you "hold" them. Combinations of holded items provide an opportunity for action. For example, holding a “bed” game offers you a choice of several actions: “sit down”, “lie down”, but “bed” and “axe” gives you the choice to “break”.
+ 
