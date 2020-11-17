@@ -12,7 +12,7 @@ RegExp.prototype.step = function(fn = (x => x)){
 let room = /# (.+?)\n(.+?)\n[-]+\n(.+?)\n[-]+/gs.step(
     (title,content,patchs) => ({
         title,
-        content: itemReplace(content),
+        content: content,
         patchs: patch(patchs),
         initStates: initState(patchs),
         roomTransitions: roomTransition(patchs),
@@ -21,7 +21,7 @@ let room = /# (.+?)\n(.+?)\n[-]+\n(.+?)\n[-]+/gs.step(
 let roomWithoutPatches = /# (.+?)\n(.+?)\n[-]+/gs.step(
     (title,content) => ({
         title,
-        content: itemReplace(content),
+        content: content,
         patchs: [],
         initStates: [],
     })
@@ -29,15 +29,20 @@ let roomWithoutPatches = /# (.+?)\n(.+?)\n[-]+/gs.step(
 
 let patch = /(?:\n|^)> (.+?)\n(((?!\n+>).)+)/gs.step((head,body) => ({
         head,
-        body: itemReplace(body)
+        body
     })
 )
 
 let scriptReplace = str => str.replace(/{%(.+)%}/g,'')
-let itemReplace = content => content.replace(/\[([^|[\]]+)\|([^|[\]]+)\]|\[([^|[\]]+?)\]/g,(_,$1,$2,$3) => `<button class='obj' data-name='${$3 || $2}' onclick='UI.itemClick(this)'>${$3 || $1}</button>`).replace(/\n/g,'<br>')
+let itemReplace = content => 
+    content
+    .replace(/\[([^|[\]]+)\|([^|[\]]+)\]|\[([^|[\]]+?)\]/g,(_,$1,$2,$3) => `<button class='obj' data-name='${$3 || $2}' onclick='UI.itemClick(this)'>${$3 || $1}</button>`)
+    .replace(/\n/g,'<br>')
+    .replace(/\\n/g,'<br>')
 let initState = /@ (.+)/g.step()
 let script =   /{%(.+)%}/g.step()
 let title =   /:: (.+)/g.step()
+let macro =  /(.+) >> (.+)/g.step((left,right) => [left,right])
 let stateTransition = /(.+) => (.+)/g.step((left,right) => [left,right])
 let stateAntonyms =  /(.+) <> (.+)/g.step((left,right) => [left,right])
 let stateRemove =   /(.+) !> (.+)/g.step((left,right) => [left,right])
@@ -59,7 +64,17 @@ Noir = {
     holded: new Set(),
 	room: null,
     state: {},
+    globalState: {},
     visited: new Set()
+}
+
+let macroExpand = script => {
+    var sc = script
+    for(m of macro(script)){
+        sc = sc.replace(new RegExp(m[0],"g"),m[1])
+    }
+    console.log(sc);
+    return sc
 }
 
 UI = {
@@ -70,7 +85,7 @@ UI = {
     run(){
         let editor = document.getElementById('editor')
         document.getElementById('actions').innerHTML = ''
-        let ast = Parser.parse(editor.value)
+        let ast = Parser.parse(macroExpand(editor.value))
         Noir.source = editor.value
         Noir.ast = ast
         Noir.state = {}
@@ -117,7 +132,7 @@ UI = {
     jump(button){
         let player = document.getElementById('player')
         let actions = document.getElementById('actions')
-        player.innerHTML += '<br>' + button.dataset.jump.replace(script.rx,(_,expr) => eval(expr) || "")
+        player.innerHTML += '<br>' + itemReplace(button.dataset.jump.replace(script.rx,(_,expr) => eval(expr) || ""))
         actions.innerHTML = ''
         document.querySelectorAll('.holded').forEach(e => e.classList.remove('holded'))
         Noir.holded = new Set()
@@ -133,10 +148,11 @@ UI = {
     },
     printRoom(room){
         let player = document.getElementById('player')
-        player.innerHTML = `<b>${room.title}</b><br><br>${room.content.replace(script.rx, expr => eval(expr) || "")}`
+        player.innerHTML = `<b>${room.title}</b><br><br>${itemReplace(room.content.replace(script.rx, expr => eval(expr) || ""))}`
     },
     nextState(state){
         Noir.state[Noir.room.title].delete(state)
+        //Noir.globalState.delete(state)
         let srule = Noir.ast.stateTransitions.filter(([s1,_]) => s1 == state)
         srule.forEach(new_state => Noir.state[Noir.room.title].add(new_state[1]))
         let rrule = Noir.ast.stateRemove.filter(([s1,_]) => s1 == state)
